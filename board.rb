@@ -39,6 +39,8 @@ class Board
     row_match? || col_match? || cross_match?
   end
 
+  private
+
   def row_match?
     @grid.any? { |row, cells| cells.all_values_match? && !cells.any_nil? }
   end
