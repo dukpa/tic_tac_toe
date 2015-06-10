@@ -41,19 +41,19 @@ class Board
 
   private
 
+  def find_match(grid)
+    grid.any? { |row, cells| cells.all_values_match? && !cells.any_nil? }
+  end
+
   def row_match?
-    @grid.any? { |row, cells| cells.all_values_match? && !cells.any_nil? }
+    find_match(@grid)
   end
 
   def col_match?
-    @grid.columns.any? do |col, cells|
-      cells.all_values_match? && !cells.any_nil?
-    end
+    find_match(@grid.columns)
   end
 
   def cross_match?
-    @grid.crosses.any? do |cross, cells|
-      cells.all_values_match? && !cells.any_nil?
-    end
+    find_match(@grid.crosses)
   end
 end
