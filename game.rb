@@ -12,8 +12,10 @@ class Game
     turn
   end
 
+  private
+
   def turn
-    get_move_from_player(@current_player)
+    get_move_from_player
 
     countdown #improved game flow
     @board.print_grid
@@ -24,21 +26,29 @@ class Game
     end
   end
 
-  def get_move_from_player(player)
+  def get_move_from_player
     puts ""
-    puts "Player #{player.xo}: Enter a move in the format 'A,1'"
+    puts "Player #{@current_player.xo}: Enter a move in the format 'A,1'"
 
-    move = player.get_move
-    if @board.move(player.xo, *move)
-      puts "\nPlayer #{player.xo} moved to #{move[0].to_s}, #{move[1].to_s}"
+    move = @current_player.get_move
+    if @board.move(@current_player.xo, *move)
+      puts "\nPlayer #{@current_player.xo} moved to "\
+        "#{move[0].to_s}, #{move[1].to_s}"
     else
-      puts "\nPlayer #{player.xo} made an illegal move."
-      get_move_from_player(player)
+      puts "\nPlayer #{@current_player.xo} made an illegal move."
+      get_move_from_player
     end
   end
 
   def game_over?
-    @board.match?
+    if @board.match?
+      puts "\nPlayer #{@current_player.xo} wins!"
+    elsif @board.grid_full?
+      puts "\nThe game is a draw!"
+    else
+      return false
+    end
+    return true
   end
 
   def switch_player
@@ -48,7 +58,7 @@ class Game
   def countdown
     50.times do
       print "."
-      sleep(1.0/50)
+      sleep(0.01)
     end
     puts ""
   end

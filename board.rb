@@ -9,11 +9,14 @@ class Board
   def print_grid
     puts ""
     puts "The Board"
-    puts " 123"
+    puts "- - - - -"
+    puts "  1|2|3"
 
     @grid.each do |row, cells|
-      print row
-      cells.each { |cell| print cell || "*" }
+      puts "  -----"
+      print "#{row} #{@grid[row][0] || "*"}|"\
+        "#{@grid[row][1] || "*"}|"\
+        "#{@grid[row][2] || "*"}"
       puts ""
     end
   end
@@ -47,6 +50,8 @@ class Board
   end
 
   def cross_match?
-    false
+    @grid.crosses.any? do |cross, cells|
+      cells.all_values_match? && !cells.any_nil?
+    end
   end
 end
